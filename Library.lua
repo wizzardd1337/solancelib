@@ -2862,7 +2862,8 @@ function Library:SetWatermark(Text)
     Library.WatermarkText.Text = Text;
 end;
 
-function Library:Notify(Text, Time)
+function Library:Notify(Text, Time, AnimationType)
+    local AnimType = AnimationType or 1
     local XSize, YSize = Library:GetTextBounds(Text, Library.Font, 14);
 
     YSize = YSize + 7
@@ -2940,12 +2941,35 @@ function Library:Notify(Text, Time)
         BackgroundColor3 = 'AccentColor';
     }, true);
 
-    pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, XSize + 8 + 4, 0, YSize), 'Out', 'Quad', 0.4, true);
+    if AnimType == 1 then
+        pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, XSize + 8 + 4, 0, YSize), 'Out', 'Quad', 0.4, true);
+    else
+        NotifyOuter.Size = UDim2.new(0, XSize + 8 + 4, 0, YSize)
+        NotifyInner.Position = UDim2.new(0, 0, 1, 10)
+        
+        NotifyInner.BackgroundTransparency = 1
+        InnerFrame.BackgroundTransparency = 1
+        NotifyLabel.TextTransparency = 1
+        NotifyLabel.TextStrokeTransparency = 1
+        LeftColor.BackgroundTransparency = 1
+
+        TweenService:Create(NotifyInner, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 0 }):Play()
+        TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 0 }):Play()
+        TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 0, TextStrokeTransparency = 0 }):Play()
+        TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 0 }):Play()
+    end
 
     task.spawn(function()
         wait(Time or 5);
 
-        pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, 0, 0, YSize), 'Out', 'Quad', 0.4, true);
+        if AnimType == 1 then
+            pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, 0, 0, YSize), 'Out', 'Quad', 0.4, true);
+        else
+            TweenService:Create(NotifyInner, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+            TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+            TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
+            TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+        end
 
         wait(0.4);
 
@@ -2953,7 +2977,8 @@ function Library:Notify(Text, Time)
     end);
 end;
 
-function Library:NotifyMid(Text, Time)
+function Library:NotifyMid(Text, Time, AnimationType)
+    local AnimType = AnimationType or 1
     local XSize, YSize = Library:GetTextBounds(Text, Library.Font, 14);
 
     YSize = YSize + 7
@@ -3032,12 +3057,35 @@ function Library:NotifyMid(Text, Time)
         BackgroundColor3 = 'AccentColor';
     }, true);
 
-    pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, XSize + 8 + 4, 0, YSize), 'Out', 'Quad', 0.4, true);
+    if AnimType == 1 then
+        pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, XSize + 8 + 4, 0, YSize), 'Out', 'Quad', 0.4, true);
+    else
+        NotifyOuter.Size = UDim2.new(0, XSize + 8 + 4, 0, YSize)
+        NotifyInner.Position = UDim2.new(0, 0, 1, 10)
+        
+        NotifyInner.BackgroundTransparency = 1
+        InnerFrame.BackgroundTransparency = 1
+        NotifyLabel.TextTransparency = 1
+        NotifyLabel.TextStrokeTransparency = 1
+        LeftColor.BackgroundTransparency = 1
+
+        TweenService:Create(NotifyInner, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 0 }):Play()
+        TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 0 }):Play()
+        TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 0, TextStrokeTransparency = 0 }):Play()
+        TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 0 }):Play()
+    end
 
     task.spawn(function()
         wait(Time or 5);
 
-        pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, 0, 0, YSize), 'Out', 'Quad', 0.4, true);
+        if AnimType == 1 then
+            pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, 0, 0, YSize), 'Out', 'Quad', 0.4, true);
+        else
+            TweenService:Create(NotifyInner, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+            TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+            TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
+            TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+        end
 
         wait(0.4);
 
