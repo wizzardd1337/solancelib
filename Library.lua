@@ -1866,7 +1866,6 @@ do
         Library:ApplyDesign(ToggleInner, 3, Color3.fromRGB(0, 0, 0));
 
         Library:AddToRegistry(ToggleInner, {
-            BackgroundColor3 = 'MainColor';
         });
 
         local ToggleLabel = Library:CreateLabel({
@@ -2016,6 +2015,10 @@ do
             ZIndex = 6;
             Parent = ToggleInner;
         });
+
+        Library:RemoveFromRegistry(ToggleLabel)
+        ToggleLabel.TextColor3 = Library.RiskColor
+        Library:AddToRegistry(ToggleLabel, { TextColor3 = 'RiskColor' })
 
         -- Tooltip: "unavailable"
         Library:AddToolTip('unavailable', ToggleOuter)
@@ -3224,7 +3227,6 @@ function Library:CreateWindow(...)
         Text = string.lower(LocalPlayer.Name);
         TextXAlignment = Enum.TextXAlignment.Right;
         TextSize = 13;
-        Font = 0;
         ZIndex = 1;
         Parent = Inner;
     });
