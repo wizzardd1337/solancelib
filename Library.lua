@@ -1870,7 +1870,7 @@ do
         });
 
         local ToggleLabel = Library:CreateLabel({
-            Size = UDim2.new(0, 216, 1, 0);
+            Size = UDim2.new(1, -24, 1, 0);
             Position = UDim2.new(1, 6, 0, 0);
             TextSize = 14;
             Text = Info.Text;
@@ -1889,7 +1889,7 @@ do
 
         local ToggleRegion = Library:Create('Frame', {
             BackgroundTransparency = 1;
-            Size = UDim2.new(0, 170, 1, 0);
+            Size = UDim2.new(1, 0, 1, 0);
             ZIndex = 8;
             Parent = ToggleOuter;
         });
@@ -2076,8 +2076,8 @@ do
                 DisplayLabel.Text = string.format('%s/%s', Slider.Value .. Suffix, Slider.Max .. Suffix);
             end
 
-            local X = math.ceil(Library:MapValue(Slider.Value, Slider.Min, Slider.Max, 0, Slider.MaxSize));
-            Fill.Size = UDim2.new(0, X, 1, 0);
+            local Ratio = Library:MapValue(Slider.Value, Slider.Min, Slider.Max, 0, 1);
+            Fill.Size = UDim2.new(Ratio, 0, 1, 0);
         end;
 
         function Slider:OnChanged(Func)
@@ -2116,15 +2116,12 @@ do
 
         SliderInner.InputBegan:Connect(function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
-                local mPos = Mouse.X;
-                local gPos = Fill.Size.X.Offset;
-                local Diff = mPos - (Fill.AbsolutePosition.X + gPos);
-
                 while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
-                    local nMPos = Mouse.X;
-                    local nX = math.clamp(gPos + (nMPos - mPos) + Diff, 0, Slider.MaxSize);
+                    local SliderWidth = SliderInner.AbsoluteSize.X;
+                    local RelativeX = math.clamp(Mouse.X - SliderInner.AbsolutePosition.X, 0, SliderWidth);
+                    local Ratio = RelativeX / SliderWidth;
 
-                    local nValue = Slider:GetValueFromXOffset(nX);
+                    local nValue = Round(Library:MapValue(Ratio, 0, 1, Slider.Min, Slider.Max));
                     local OldValue = Slider.Value;
                     Slider.Value = nValue;
 
