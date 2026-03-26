@@ -32,7 +32,7 @@ local Library = {
     FontColor = Color3.fromRGB(255, 255, 255);
     MainColor = Color3.fromRGB(15, 15, 18);
     BackgroundColor = Color3.fromRGB(10, 10, 12);
-    AccentColor = Color3.fromRGB(110, 60, 255);
+    AccentColor = Color3.fromRGB(166, 112, 255);
     OutlineColor = Color3.fromRGB(35, 35, 38);
     RiskColor = Color3.fromRGB(255, 50, 50),
 
@@ -2848,36 +2848,41 @@ function Library:Notify(Text, Time, AnimationType)
     YSize = YSize + 7
 
     local NotifyOuter = Library:Create('Frame', {
-        BorderColor3 = Color3.new(0, 0, 0);
+        BackgroundColor3 = Color3.new(0, 0, 0);
+        BorderSizePixel = 0;
         Position = UDim2.new(0, 100, 0, 10);
         Size = UDim2.new(0, 0, 0, YSize);
         ClipsDescendants = true;
-        ZIndex = 100;
+        ZIndex = 110;
         Parent = Library.NotificationArea;
     });
 
+    Library:ApplyDesign(NotifyOuter, 6, Library.AccentColor);
+
     local NotifyInner = Library:Create('Frame', {
         BackgroundColor3 = Library.MainColor;
-        BorderColor3 = Library.OutlineColor;
-        BorderMode = Enum.BorderMode.Inset;
+        BorderSizePixel = 0;
         Size = UDim2.new(1, 0, 1, 0);
-        ZIndex = 101;
+        ZIndex = 111;
         Parent = NotifyOuter;
     });
 
+    Library:ApplyDesign(NotifyInner, 6, Color3.fromRGB(0, 0, 0));
+
     Library:AddToRegistry(NotifyInner, {
         BackgroundColor3 = 'MainColor';
-        BorderColor3 = 'OutlineColor';
     }, true);
 
     local InnerFrame = Library:Create('Frame', {
-        BackgroundColor3 = Color3.new(1, 1, 1);
+        BackgroundColor3 = Library.MainColor;
         BorderSizePixel = 0;
         Position = UDim2.new(0, 1, 0, 1);
         Size = UDim2.new(1, -2, 1, -2);
-        ZIndex = 102;
+        ZIndex = 112;
         Parent = NotifyInner;
     });
+
+    Library:ApplyDesign(InnerFrame, 5, Library.OutlineColor);
 
     local Gradient = Library:Create('UIGradient', {
         Color = ColorSequence.new({
@@ -2943,6 +2948,8 @@ function Library:Notify(Text, Time, AnimationType)
 
         if AnimType == 1 then
             pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, 0, 0, YSize), 'Out', 'Quad', 0.4, true);
+            TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
+            TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
         else
             TweenService:Create(NotifyInner, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
             TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
@@ -2968,6 +2975,7 @@ function Library:NotifyMid(Text, Time, AnimationType)
         BorderSizePixel = 0;
         Position = UDim2.new(0.5, 0, 0, 10);
         Size = UDim2.new(0, 0, 0, YSize);
+        ClipsDescendants = true;
         ZIndex = 110;
         Parent = Library.NotificationAreaMid;
     });
@@ -3063,6 +3071,8 @@ function Library:NotifyMid(Text, Time, AnimationType)
 
         if AnimType == 1 then
             pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, 0, 0, YSize), 'Out', 'Quad', 0.4, true);
+            TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
+            TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
         else
             TweenService:Create(NotifyInner, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
             TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
