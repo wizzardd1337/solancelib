@@ -3224,6 +3224,7 @@ function Library:CreateWindow(...)
         Text = string.lower(LocalPlayer.Name);
         TextXAlignment = Enum.TextXAlignment.Right;
         TextSize = 13;
+        Font = 0;
         ZIndex = 1;
         Parent = Inner;
     });
