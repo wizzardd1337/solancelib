@@ -1970,6 +1970,71 @@ do
         return self:AddToggle(Idx, Info)
     end;
 
+    function Funcs:AddToggleUN(Idx, Info)
+        assert(Info.Text, 'AddToggleUN: Missing `Text` string.')
+
+        local Toggle = {
+            Value = false;
+            Type = 'Toggle';
+            Callback = function() end;
+            Addons = {},
+        };
+
+        local Groupbox = self;
+        local Container = Groupbox.Container;
+
+        local ToggleOuter = Library:Create('Frame', {
+            BackgroundColor3 = Color3.new(0, 0, 0);
+            BackgroundTransparency = 0.6;
+            BorderSizePixel = 0;
+            Size = UDim2.new(0, 14, 0, 14);
+            ZIndex = 5;
+            Parent = Container;
+        });
+
+        Library:ApplyDesign(ToggleOuter, 4, Library.OutlineColor);
+
+        local ToggleInner = Library:Create('Frame', {
+            BackgroundColor3 = Library.MainColor;
+            BackgroundTransparency = 0.6;
+            BorderSizePixel = 0;
+            Size = UDim2.new(1, -2, 1, -2);
+            Position = UDim2.new(0, 1, 0, 1);
+            ZIndex = 6;
+            Parent = ToggleOuter;
+        });
+
+        Library:ApplyDesign(ToggleInner, 3, Color3.fromRGB(0, 0, 0));
+
+        local ToggleLabel = Library:CreateLabel({
+            Size = UDim2.new(0, 252, 1, 0);
+            Position = UDim2.new(1, 6, 0, 0);
+            TextSize = 14;
+            Text = Info.Text;
+            TextTransparency = 0.5;
+            TextXAlignment = Enum.TextXAlignment.Left;
+            ZIndex = 6;
+            Parent = ToggleInner;
+        });
+
+        -- Tooltip: "unavailable"
+        Library:AddToolTip('unavailable', ToggleOuter)
+
+        function Toggle:SetValue() end;
+        function Toggle:OnChanged() end;
+
+        Groupbox:AddBlank(Info.BlankSize or 5 + 2);
+        Groupbox:Resize();
+
+        Toggle.TextLabel = ToggleLabel;
+        Toggle.Container = Container;
+
+        Toggles[Idx] = Toggle;
+
+        return Toggle;
+    end;
+
+
     function Funcs:AddSlider(Idx, Info)
         assert(Info.Default, 'AddSlider: Missing default value.');
         assert(Info.Text, 'AddSlider: Missing slider text.');
@@ -3147,6 +3212,48 @@ function Library:CreateWindow(...)
         ZIndex = 1;
         Parent = Inner;
     });
+
+    -- Player Avatar + Name (top-right header)
+    local Players = game:GetService('Players')
+    local LocalPlayer = Players.LocalPlayer
+
+    local PlayerNameLabel = Library:CreateLabel({
+        AnchorPoint = Vector2.new(1, 0);
+        Position = UDim2.new(1, -32, 0, 0);
+        Size = UDim2.new(0, 200, 0, 25);
+        Text = string.lower(LocalPlayer.Name);
+        TextXAlignment = Enum.TextXAlignment.Right;
+        TextSize = 13;
+        ZIndex = 1;
+        Parent = Inner;
+    });
+
+    local AvatarFrame = Library:Create('Frame', {
+        AnchorPoint = Vector2.new(1, 0.5);
+        Position = UDim2.new(1, -8, 0, 12);
+        Size = UDim2.new(0, 20, 0, 20);
+        BackgroundColor3 = Color3.new(1, 1, 1);
+        BorderSizePixel = 0;
+        ZIndex = 2;
+        Parent = Inner;
+    });
+
+    Library:Create('UICorner', { CornerRadius = UDim.new(1, 0), Parent = AvatarFrame });
+
+    local AvatarImage = Library:Create('ImageLabel', {
+        Size = UDim2.new(1, 0, 1, 0);
+        BackgroundTransparency = 1;
+        Image = 'rbxthumb://type=AvatarHeadShot&id=' .. LocalPlayer.UserId .. '&w=48&h=48';
+        ZIndex = 3;
+        Parent = AvatarFrame;
+    });
+
+    Library:Create('UICorner', { CornerRadius = UDim.new(1, 0), Parent = AvatarImage });
+
+    -- Store references for name protect integration
+    Library.PlayerNameLabel = PlayerNameLabel
+    Library.PlayerRealName = string.lower(LocalPlayer.Name)
+
 
     local MainSectionOuter = Library:Create('Frame', {
         BackgroundColor3 = Library.BackgroundColor;
