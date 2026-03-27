@@ -3378,6 +3378,20 @@ function Library:CreateWindow(...)
     Library:RemoveFromRegistry(WelcomeHint)
     WelcomeHint.TextColor3 = Color3.fromRGB(100, 100, 100)
 
+    local PoweredByLabel = Library:CreateLabel({
+        AnchorPoint = Vector2.new(1, 1);
+        Position = UDim2.new(1, -15, 1, -15);
+        Size = UDim2.new(0, 150, 0, 14);
+        Text = 'powered by solancelib';
+        TextSize = 12;
+        TextXAlignment = Enum.TextXAlignment.Right;
+        ZIndex = 4;
+        Parent = WelcomeFrame;
+    });
+
+    Library:RemoveFromRegistry(PoweredByLabel)
+    PoweredByLabel.TextColor3 = Color3.fromRGB(60, 60, 60)
+
     Library.WelcomeFrame = WelcomeFrame
     Library.WelcomeTitle = WelcomeTitle
     Library.ChangelogText = ChangelogText
