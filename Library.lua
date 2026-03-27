@@ -3558,7 +3558,7 @@ function Library:CreateWindow(...)
             TabFrame.Position = UDim2.new(0, 0, 0, 8);
             TabFrame.Visible = true;
 
-            TweenService:Create(TabFrame, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            TweenService:Create(TabFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                 Position = UDim2.new(0, 0, 0, 0)
             }):Play();
         end;
