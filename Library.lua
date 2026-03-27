@@ -3544,13 +3544,9 @@ function Library:CreateWindow(...)
                 Tab:HideTab();
             end;
 
-            -- Hide welcome screen with fade
+            -- Hide welcome screen
             if WelcomeFrame and WelcomeFrame.Visible then
-                local fadeOut = TweenService:Create(WelcomeFrame, TweenInfo.new(0.15), { GroupTransparency = 1 })
-                fadeOut:Play()
-                fadeOut.Completed:Connect(function()
-                    WelcomeFrame.Visible = false;
-                end)
+                WelcomeFrame.Visible = false;
             end
 
             TweenService:Create(TabButton, TweenInfo.new(0.3), { BackgroundColor3 = Library.MainColor }):Play();
@@ -3558,13 +3554,11 @@ function Library:CreateWindow(...)
 
             Library.RegistryMap[TabButton].Properties.BackgroundColor3 = 'MainColor';
 
-            -- Animate tab content in (fade + slide up)
-            TabFrame.GroupTransparency = 1;
-            TabFrame.Position = UDim2.new(0, 0, 0, 6);
+            -- Animate tab content in (slide up)
+            TabFrame.Position = UDim2.new(0, 0, 0, 8);
             TabFrame.Visible = true;
 
-            TweenService:Create(TabFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                GroupTransparency = 0,
+            TweenService:Create(TabFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                 Position = UDim2.new(0, 0, 0, 0)
             }):Play();
         end;
@@ -3575,7 +3569,6 @@ function Library:CreateWindow(...)
 
             Library.RegistryMap[TabButton].Properties.BackgroundColor3 = 'BackgroundColor';
             TabFrame.Visible = false;
-            TabFrame.GroupTransparency = 1;
         end;
 
         function Tab:SetLayoutOrder(Position)
