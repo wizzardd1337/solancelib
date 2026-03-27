@@ -3343,7 +3343,7 @@ function Library:CreateWindow(...)
     local ChangelogHeader = Library:CreateLabel({
         Position = UDim2.new(0, 20, 0, 60);
         Size = UDim2.new(1, -40, 0, 18);
-        Text = 'changelog:';
+        Text = 'changes:';
         TextSize = 15;
         TextXAlignment = Enum.TextXAlignment.Left;
         ZIndex = 4;
@@ -3352,7 +3352,7 @@ function Library:CreateWindow(...)
 
     local ChangelogText = Library:CreateLabel({
         Position = UDim2.new(0, 20, 0, 82);
-        Size = UDim2.new(1, -40, 1, -120);
+        Size = UDim2.new(1, -40, 0.4, 0);
         Text = '';
         TextSize = 13;
         TextXAlignment = Enum.TextXAlignment.Left;
@@ -3364,6 +3364,34 @@ function Library:CreateWindow(...)
 
     Library:RemoveFromRegistry(ChangelogText)
     ChangelogText.TextColor3 = Color3.fromRGB(180, 180, 180)
+
+    local InternalHeader = Library:CreateLabel({
+        Position = UDim2.new(0, 20, 0.5, 10);
+        Size = UDim2.new(1, -40, 0, 18);
+        Text = 'internal changes:';
+        TextSize = 15;
+        TextXAlignment = Enum.TextXAlignment.Left;
+        ZIndex = 4;
+        Parent = WelcomeFrame;
+    });
+
+    Library:RemoveFromRegistry(InternalHeader)
+    InternalHeader.TextColor3 = Color3.fromRGB(120, 120, 120)
+
+    local InternalText = Library:CreateLabel({
+        Position = UDim2.new(0, 20, 0.5, 32);
+        Size = UDim2.new(1, -40, 0.4, -20);
+        Text = '';
+        TextSize = 13;
+        TextXAlignment = Enum.TextXAlignment.Left;
+        TextYAlignment = Enum.TextYAlignment.Top;
+        TextWrapped = true;
+        ZIndex = 4;
+        Parent = WelcomeFrame;
+    });
+
+    Library:RemoveFromRegistry(InternalText)
+    InternalText.TextColor3 = Color3.fromRGB(100, 100, 100)
 
     local WelcomeHint = Library:CreateLabel({
         AnchorPoint = Vector2.new(0.5, 1);
