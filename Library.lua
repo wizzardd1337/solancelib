@@ -3481,13 +3481,12 @@ function Library:CreateWindow(...)
             Parent = TabButton;
         });
 
-        local TabFrame = Library:Create('CanvasGroup', {
+        local TabFrame = Library:Create('Frame', {
             Name = 'TabFrame',
             BackgroundTransparency = 1;
             Position = UDim2.new(0, 0, 0, 0);
             Size = UDim2.new(1, 0, 1, 0);
             Visible = false;
-            GroupTransparency = 1;
             ZIndex = 2;
             Parent = TabContainer;
         });
@@ -3555,13 +3554,11 @@ function Library:CreateWindow(...)
 
             Library.RegistryMap[TabButton].Properties.BackgroundColor3 = 'MainColor';
 
-            -- Animate tab content in (fade + slide up)
-            TabFrame.GroupTransparency = 1;
+            -- Animate tab content in (slide up)
             TabFrame.Position = UDim2.new(0, 0, 0, 8);
             TabFrame.Visible = true;
 
-            TweenService:Create(TabFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                GroupTransparency = 0,
+            TweenService:Create(TabFrame, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
                 Position = UDim2.new(0, 0, 0, 0)
             }):Play();
         end;
@@ -3572,7 +3569,6 @@ function Library:CreateWindow(...)
 
             Library.RegistryMap[TabButton].Properties.BackgroundColor3 = 'BackgroundColor';
             TabFrame.Visible = false;
-            TabFrame.GroupTransparency = 1;
         end;
 
         function Tab:SetLayoutOrder(Position)
