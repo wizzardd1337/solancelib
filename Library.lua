@@ -3318,9 +3318,91 @@ function Library:CreateWindow(...)
         BackgroundColor3 = 'MainColor';
     });
 
+    -- Welcome Screen (visible when no tab is selected)
+    local WelcomeFrame = Library:Create('Frame', {
+        BackgroundTransparency = 1;
+        Size = UDim2.new(1, 0, 1, 0);
+        ZIndex = 3;
+        Parent = TabContainer;
+    });
+
+    local WelcomeTitle = Library:CreateLabel({
+        Position = UDim2.new(0, 20, 0, 20);
+        Size = UDim2.new(1, -40, 0, 30);
+        Text = 'welcome, ' .. string.lower(LocalPlayer.Name);
+        TextSize = 20;
+        TextXAlignment = Enum.TextXAlignment.Left;
+        ZIndex = 4;
+        Parent = WelcomeFrame;
+    });
+
+    Library:RemoveFromRegistry(WelcomeTitle)
+    WelcomeTitle.TextColor3 = Library.AccentColor
+    Library:AddToRegistry(WelcomeTitle, { TextColor3 = 'AccentColor' })
+
+    local ChangelogHeader = Library:CreateLabel({
+        Position = UDim2.new(0, 20, 0, 60);
+        Size = UDim2.new(1, -40, 0, 18);
+        Text = 'changelog:';
+        TextSize = 15;
+        TextXAlignment = Enum.TextXAlignment.Left;
+        ZIndex = 4;
+        Parent = WelcomeFrame;
+    });
+
+    local ChangelogText = Library:CreateLabel({
+        Position = UDim2.new(0, 20, 0, 82);
+        Size = UDim2.new(1, -40, 1, -120);
+        Text = '';
+        TextSize = 13;
+        TextXAlignment = Enum.TextXAlignment.Left;
+        TextYAlignment = Enum.TextYAlignment.Top;
+        TextWrapped = true;
+        ZIndex = 4;
+        Parent = WelcomeFrame;
+    });
+
+    Library:RemoveFromRegistry(ChangelogText)
+    ChangelogText.TextColor3 = Color3.fromRGB(180, 180, 180)
+
+    local WelcomeHint = Library:CreateLabel({
+        AnchorPoint = Vector2.new(0.5, 1);
+        Position = UDim2.new(0.5, 0, 1, -15);
+        Size = UDim2.new(1, -40, 0, 18);
+        Text = 'select one of the tabs to start using the cheat.';
+        TextSize = 13;
+        ZIndex = 4;
+        Parent = WelcomeFrame;
+    });
+
+    Library:RemoveFromRegistry(WelcomeHint)
+    WelcomeHint.TextColor3 = Color3.fromRGB(100, 100, 100)
+
+    Library.WelcomeFrame = WelcomeFrame
+    Library.WelcomeTitle = WelcomeTitle
+    Library.ChangelogText = ChangelogText
+
+    function Library:SetChangelog(text)
+        if Library.ChangelogText then
+            Library.ChangelogText.Text = text
+        end
+    end
+
+    function Library:UpdateWelcomeName()
+        if Library.WelcomeTitle then
+            if Toggles and Toggles.UI_ProtectNameInUI and Toggles.UI_ProtectNameInUI.Value 
+                and Toggles.Misc_NameProtectEnabled and Toggles.Misc_NameProtectEnabled.Value then
+                Library.WelcomeTitle.Text = 'welcome, protected'
+            else
+                Library.WelcomeTitle.Text = 'welcome, ' .. (Library.PlayerRealName or string.lower(LocalPlayer.Name))
+            end
+        end
+    end
+
     function Window:SetWindowTitle(Title)
         WindowLabel.Text = Title;
     end;
+
 
     function Window:AddTab(Name)
         local Tab = {
@@ -3415,6 +3497,11 @@ function Library:CreateWindow(...)
             for _, Tab in next, Window.Tabs do
                 Tab:HideTab();
             end;
+
+            -- Hide welcome screen when a tab is selected
+            if WelcomeFrame then
+                WelcomeFrame.Visible = false;
+            end
 
             TweenService:Create(TabButton, TweenInfo.new(0.3), { BackgroundColor3 = Library.MainColor }):Play();
             TabButtonLabel.TextColor3 = Library.AccentColor;
