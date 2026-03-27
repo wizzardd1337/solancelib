@@ -3423,10 +3423,14 @@ function Library:CreateWindow(...)
     Library.WelcomeFrame = WelcomeFrame
     Library.WelcomeTitle = WelcomeTitle
     Library.ChangelogText = ChangelogText
+    Library.InternalText = InternalText
 
-    function Library:SetChangelog(text)
+    function Library:SetChangelog(changes, internal)
         if Library.ChangelogText then
-            Library.ChangelogText.Text = text
+            Library.ChangelogText.Text = changes or ''
+        end
+        if Library.InternalText then
+            Library.InternalText.Text = internal or ''
         end
     end
 
