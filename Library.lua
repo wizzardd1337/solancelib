@@ -1,34 +1,10 @@
-local RealInputService = game:GetService('UserInputService')
-local _mousePressed = false
-RealInputService.InputBegan:Connect(function(inp) if inp.UserInputType == Enum.UserInputType.MouseButton1 then _mousePressed = true end end)
-RealInputService.InputEnded:Connect(function(inp) if inp.UserInputType == Enum.UserInputType.MouseButton1 then _mousePressed = false end end)
-local InputService = setmetatable({
-    IsMouseButtonPressed = function(self, inputType)
-        if inputType == Enum.UserInputType.MouseButton1 then return _mousePressed end
-        return pcall(function() return RealInputService:IsMouseButtonPressed(inputType) end)
-    end
-}, {
-    __index = function(self, key)
-        local val = RealInputService[key]
-        if type(val) == "function" then return function(_, ...) return val(RealInputService, ...) end end
-        return val
-    end
-})
-local TextService = { GetTextSize = function(self, str, sz, f, res) return Vector2.new(#tostring(str) * (sz * 0.55), sz) end }
+local InputService = game:GetService('UserInputService');
+local TextService = game:GetService('TextService');
 local CoreGui = game:GetService('CoreGui');
 local Teams = game:GetService('Teams');
 local Players = game:GetService('Players');
 local RunService = game:GetService('RunService')
-local TweenService = {
-    Create = function(self, instance, tweenInfo, propTable)
-        return {
-            Play = function()
-                for k, v in pairs(propTable) do pcall(function() instance[k] = v end) end
-            end,
-            Cancel = function() end, Pause = function() end, Stop = function() end
-        }
-    end
-}
+local TweenService = game:GetService('TweenService');
 local RenderStepped = RunService.RenderStepped;
 local LocalPlayer = Players.LocalPlayer;
 local Mouse = LocalPlayer:GetMouse();
@@ -36,19 +12,10 @@ local Mouse = LocalPlayer:GetMouse();
 local ProtectGui = protectgui or (syn and syn.protect_gui) or (function() end);
 
 local ScreenGui = Instance.new('ScreenGui');
-pcall(function()
-    ScreenGui.Name = game:GetService("HttpService"):GenerateGUID(false)
-end)
 ProtectGui(ScreenGui);
 
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global;
-
-local success, hui = pcall(function() return gethui() end)
-if success and hui then
-    ScreenGui.Parent = hui
-else
-    ScreenGui.Parent = CoreGui;
-end
+ScreenGui.Parent = CoreGui;
 
 local Toggles = {};
 local Options = {};
