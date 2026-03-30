@@ -2945,7 +2945,9 @@ do
         Size = UDim2.new(1, 0, 0, 20);
         Position = UDim2.fromOffset(5, 2),
         TextXAlignment = Enum.TextXAlignment.Left,
-        Text = 'Spectator List';
+        Font = Library.Font,
+        TextColor3 = Library.FontColor,
+        Text = 'spectator list';
         ZIndex = 104;
         Parent = SpectatorInner;
     });
