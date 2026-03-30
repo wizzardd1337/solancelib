@@ -907,6 +907,13 @@ do
             Library.OpenedFrames[PickerFrameOuter] = nil;
         end;
 
+        function ColorPicker:SetVisible(state)
+            DisplayFrame.Visible = state;
+            if not state then
+                ColorPicker:Hide();
+            end;
+        end;
+
         function ColorPicker:SetValue(HSV, Transparency)
             local Color = Color3.fromHSV(HSV[1], HSV[2], HSV[3]);
 
