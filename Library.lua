@@ -3430,11 +3430,20 @@ function Library:CreateWindow(...)
     });
 
     local TabArea = Library:Create('Frame', {
-        BackgroundTransparency = 1;
+        BackgroundColor3 = Library.MainColor;
+        BorderSizePixel = 0;
         Position = UDim2.new(0, 8, 0, 8);
-        Size = UDim2.new(1, -16, 0, 24);
+        Size = UDim2.new(1, -16, 0, 26);
         ZIndex = 1;
         Parent = MainSectionInner;
+    });
+    Library:ApplyDesign(TabArea, 6, Library.OutlineColor);
+    Library:AddToRegistry(TabArea, { BackgroundColor3 = 'MainColor' });
+    Library:Create('UIPadding', {
+        PaddingLeft = UDim.new(0, 4);
+        PaddingTop = UDim.new(0, 3);
+        PaddingBottom = UDim.new(0, 3);
+        Parent = TabArea;
     });
 
     local TabListLayout = Library:Create('UIListLayout', {
@@ -3447,8 +3456,8 @@ function Library:CreateWindow(...)
     local TabContainer = Library:Create('Frame', {
         BackgroundColor3 = Library.MainColor;
         BorderSizePixel = 0;
-        Position = UDim2.new(0, 8, 0, 34);
-        Size = UDim2.new(1, -16, 1, -42);
+        Position = UDim2.new(0, 8, 0, 40);
+        Size = UDim2.new(1, -16, 1, -48);
         ZIndex = 2;
         Parent = MainSectionInner;
     });
@@ -3603,7 +3612,7 @@ function Library:CreateWindow(...)
             BackgroundColor3 = Library.BackgroundColor;
             BorderSizePixel = 0;
             Size = UDim2.new(0, TabButtonWidth + 16, 1, 0);
-            ZIndex = 1;
+            ZIndex = 3;
             Parent = TabArea;
         });
 
@@ -3618,7 +3627,7 @@ function Library:CreateWindow(...)
             Size = UDim2.new(1, 0, 1, 0);
             Text = Name;
             TextSize = 13;
-            ZIndex = 2;
+            ZIndex = 4;
             Parent = TabButton;
         });
 
