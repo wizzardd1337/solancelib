@@ -5,6 +5,7 @@ local Teams = game:GetService('Teams');
 local Players = game:GetService('Players');
 local RunService = game:GetService('RunService')
 local TweenService = game:GetService('TweenService');
+local HttpService = game:GetService('HttpService');
 local RenderStepped = RunService.RenderStepped;
 local LocalPlayer = Players.LocalPlayer;
 local Mouse = LocalPlayer:GetMouse();
@@ -65,6 +66,119 @@ table.insert(Library.Signals, RenderStepped:Connect(function(Delta)
         Library.CurrentRainbowColor = Color3.fromHSV(Hue, 0.8, 1);
     end
 end))
+
+-- Solance subscription (same Supabase project as website / counterblox loader)
+local SOLANCE_SUPABASE_URL = 'https://kgcpzexkgrdsvupaxpmv.supabase.co';
+local SOLANCE_SUPABASE_KEY = 'sb_publishable_j0TFGJANFx3WUC_SMmOo8g_yLLDG7o5';
+
+local function GetRequestFunc()
+    return syn and syn.request or http_request or request or (http and http.request);
+end;
+
+local function GetLocalSolanceUserId()
+    local request_func = GetRequestFunc();
+    if not request_func then
+        return nil;
+    end;
+
+    local success, res = pcall(function()
+        return request_func({
+            Url = 'http://127.0.0.1:9999/auth';
+            Method = 'GET';
+        });
+    end);
+
+    if not success or not res or res.StatusCode ~= 200 then
+        return nil;
+    end;
+
+    local ok, data = pcall(function()
+        return HttpService:JSONDecode(res.Body);
+    end);
+
+    if not ok or type(data) ~= 'table' or not data.user_id then
+        return nil;
+    end;
+
+    return data.user_id;
+end;
+
+local function FetchSubscriptionDaysRemaining()
+    local request_func = GetRequestFunc();
+    if not request_func then
+        return nil;
+    end;
+
+    local user_id = GetLocalSolanceUserId();
+    if not user_id then
+        return nil;
+    end;
+
+    local url = SOLANCE_SUPABASE_URL .. '/rest/v1/subscriptions?select=expires_at&user_id=eq.' .. user_id;
+    local success, res = pcall(function()
+        return request_func({
+            Url = url;
+            Method = 'GET';
+            Headers = {
+                ['apikey'] = SOLANCE_SUPABASE_KEY;
+                ['Authorization'] = 'Bearer ' .. SOLANCE_SUPABASE_KEY;
+                ['Content-Type'] = 'application/json';
+            };
+        });
+    end);
+
+    if not success or not res or res.StatusCode ~= 200 then
+        return nil;
+    end;
+
+    local ok, data = pcall(function()
+        return HttpService:JSONDecode(res.Body);
+    end);
+
+    if not ok or type(data) ~= 'table' or #data == 0 or not data[1].expires_at then
+        return nil;
+    end;
+
+    local expire_str = data[1].expires_at:gsub('T', ' '):gsub('Z', '');
+    local y, m, d, h, min, s = expire_str:match('(%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)');
+    if not y then
+        return nil;
+    end;
+
+    local expire_time = os.time({ year = y, month = m, day = d, hour = h, min = min, sec = s });
+    return math.ceil((expire_time - os.time()) / 86400);
+end;
+
+function Library:RefreshSubscriptionLabel()
+    local label = self.SubscriptionLabel;
+    if not label then
+        return;
+    end;
+
+    task.spawn(function()
+        local days = FetchSubscriptionDaysRemaining();
+
+        if not label.Parent then
+            return;
+        end;
+
+        if days == nil then
+            label.Text = 'subscription unavailable';
+            return;
+        end;
+
+        if days < 0 then
+            label.Text = 'subscription expired';
+            return;
+        end;
+
+        if days == 1 then
+            label.Text = 'subscription ends 1 day';
+        else
+            label.Text = 'subscription ends ' .. tostring(days) .. ' days';
+        end;
+    end);
+end;
 
 local function GetPlayersString()
     local PlayerList = Players:GetPlayers();
@@ -3333,46 +3447,36 @@ function Library:CreateWindow(...)
         Parent = Inner;
     });
 
-    -- Player Avatar + Name (top-right header)
+    -- Subscription time remaining (top-right header); data from Supabase via loader session
     local Players = game:GetService('Players')
     local LocalPlayer = Players.LocalPlayer
 
-    local PlayerNameLabel = Library:CreateLabel({
+    Library.PlayerRealName = string.lower(LocalPlayer.Name);
+    Library.PlayerNameLabel = nil;
+
+    local SubscriptionLabel = Library:CreateLabel({
         AnchorPoint = Vector2.new(1, 0);
-        Position = UDim2.new(1, -32, 0, 0);
-        Size = UDim2.new(0, 200, 0, 25);
-        Text = string.lower(LocalPlayer.Name);
+        Position = UDim2.new(1, -10, 0, 0);
+        Size = UDim2.new(0, 300, 0, 25);
+        Text = 'subscription ends ...';
         TextXAlignment = Enum.TextXAlignment.Right;
         TextSize = 13;
         ZIndex = 1;
         Parent = Inner;
     });
 
-    local AvatarFrame = Library:Create('Frame', {
-        AnchorPoint = Vector2.new(1, 0.5);
-        Position = UDim2.new(1, -8, 0, 12);
-        Size = UDim2.new(0, 20, 0, 20);
-        BackgroundColor3 = Color3.new(1, 1, 1);
-        BorderSizePixel = 0;
-        ZIndex = 2;
-        Parent = Inner;
-    });
+    Library.SubscriptionLabel = SubscriptionLabel;
 
-    Library:Create('UICorner', { CornerRadius = UDim.new(1, 0), Parent = AvatarFrame });
+    Library:RefreshSubscriptionLabel();
 
-    local AvatarImage = Library:Create('ImageLabel', {
-        Size = UDim2.new(1, 0, 1, 0);
-        BackgroundTransparency = 1;
-        Image = 'rbxthumb://type=AvatarHeadShot&id=' .. LocalPlayer.UserId .. '&w=48&h=48';
-        ZIndex = 3;
-        Parent = AvatarFrame;
-    });
-
-    Library:Create('UICorner', { CornerRadius = UDim.new(1, 0), Parent = AvatarImage });
-
-    -- Store references for name protect integration
-    Library.PlayerNameLabel = PlayerNameLabel
-    Library.PlayerRealName = string.lower(LocalPlayer.Name)
+    task.spawn(function()
+        while SubscriptionLabel.Parent do
+            task.wait(60);
+            if SubscriptionLabel.Parent then
+                Library:RefreshSubscriptionLabel();
+            end;
+        end;
+    end);
 
 
     local MainSectionOuter = Library:Create('Frame', {
