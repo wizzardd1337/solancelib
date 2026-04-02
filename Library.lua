@@ -163,19 +163,19 @@ function Library:RefreshSubscriptionLabel()
         end;
 
         if days == nil then
-            label.Text = 'subscription unavailable';
+            label.Text = 'unavailable';
             return;
         end;
 
         if days < 0 then
-            label.Text = 'subscription expired';
+            label.Text = 'expired';
             return;
         end;
 
         if days == 1 then
-            label.Text = 'subscription ends 1 day';
+            label.Text = '1 day left';
         else
-            label.Text = 'subscription ends ' .. tostring(days) .. ' days';
+            label.Text = tostring(days) .. ' days left';
         end;
     end);
 end;
@@ -3458,7 +3458,7 @@ function Library:CreateWindow(...)
         AnchorPoint = Vector2.new(1, 0);
         Position = UDim2.new(1, -10, 0, 0);
         Size = UDim2.new(0, 300, 0, 25);
-        Text = 'subscription ends ...';
+        Text = '...';
         TextXAlignment = Enum.TextXAlignment.Right;
         TextSize = 13;
         ZIndex = 1;
