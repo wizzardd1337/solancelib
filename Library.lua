@@ -103,7 +103,9 @@ local function GetLocalSolanceUserId()
     return data.user_id;
 end;
 
-local function FetchSubscriptionDaysRemaining()
+-- Returns: days_remaining (number), is_lifetime (bool). (nil, nil) on error.
+-- Lifetime = expires_at year >= 2090 (matches website "Lifetime" checkout to 2099).
+local function FetchSubscriptionInfo()
     local request_func = GetRequestFunc();
     if not request_func then
         return nil;
@@ -146,7 +148,10 @@ local function FetchSubscriptionDaysRemaining()
     end;
 
     local expire_time = os.time({ year = y, month = m, day = d, hour = h, min = min, sec = s });
-    return math.ceil((expire_time - os.time()) / 86400);
+    local days = math.ceil((expire_time - os.time()) / 86400);
+    local is_lifetime = tonumber(y) >= 1000;
+
+    return days, is_lifetime;
 end;
 
 function Library:RefreshSubscriptionLabel()
@@ -156,7 +161,7 @@ function Library:RefreshSubscriptionLabel()
     end;
 
     task.spawn(function()
-        local days = FetchSubscriptionDaysRemaining();
+        local days, is_lifetime = FetchSubscriptionInfo();
 
         if not label.Parent then
             return;
@@ -169,6 +174,11 @@ function Library:RefreshSubscriptionLabel()
 
         if days < 0 then
             label.Text = 'expired';
+            return;
+        end;
+
+        if is_lifetime then
+            label.Text = 'lifetime';
             return;
         end;
 
