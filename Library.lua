@@ -149,7 +149,7 @@ local function FetchSubscriptionInfo()
 
     local expire_time = os.time({ year = y, month = m, day = d, hour = h, min = min, sec = s });
     local days = math.ceil((expire_time - os.time()) / 86400);
-    local is_lifetime = tonumber(y) >= 1000;
+    local is_lifetime = tonumber(y) >= 2090;
 
     return days, is_lifetime;
 end;
@@ -168,25 +168,21 @@ function Library:RefreshSubscriptionLabel()
         end;
 
         if days == nil then
-            label.Text = 'unavailable';
+            label.Text = 'days: unavailable';
             return;
         end;
 
         if days < 0 then
-            label.Text = 'expired';
+            label.Text = 'days: expired';
             return;
         end;
 
         if is_lifetime then
-            label.Text = 'lifetime';
+            label.Text = 'days: lifetime';
             return;
         end;
 
-        if days == 1 then
-            label.Text = '1 day left';
-        else
-            label.Text = tostring(days) .. ' days left';
-        end;
+        label.Text = 'days: ' .. tostring(days);
     end);
 end;
 
@@ -3468,7 +3464,7 @@ function Library:CreateWindow(...)
         AnchorPoint = Vector2.new(1, 0);
         Position = UDim2.new(1, -10, 0, 0);
         Size = UDim2.new(0, 300, 0, 25);
-        Text = '...';
+        Text = 'days: ...';
         TextXAlignment = Enum.TextXAlignment.Right;
         TextSize = 13;
         ZIndex = 1;
