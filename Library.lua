@@ -154,6 +154,8 @@ local function FetchSubscriptionInfo()
     return days, is_lifetime;
 end;
 
+Library.FetchSubscriptionInfo = FetchSubscriptionInfo;
+
 function Library:RefreshSubscriptionLabel()
     local label = self.SubscriptionLabel;
     if not label then
