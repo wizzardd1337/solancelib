@@ -3388,6 +3388,125 @@ function Library:NotifyMid(Text, Time, AnimationType)
     end);
 end;
 
+function Library:NotifyError(Text, Time, AnimationType)
+    local AnimType = AnimationType or 1
+    local XSize, YSize = Library:GetTextBounds(Text, Library.Font, 14);
+
+    YSize = YSize + 7
+
+    local NotifyOuter = Library:Create('Frame', {
+        AnchorPoint = Vector2.new(0.5, 0);
+        BackgroundColor3 = Color3.new(0, 0, 0);
+        BorderSizePixel = 0;
+        Position = UDim2.new(0.5, 0, 0, 10);
+        Size = UDim2.new(0, 0, 0, YSize);
+        ClipsDescendants = true;
+        ZIndex = 110;
+        Parent = Library.NotificationAreaMid;
+    });
+
+    Library:ApplyDesign(NotifyOuter, 6, Library.RiskColor);
+
+    local NotifyInner = Library:Create('Frame', {
+        BackgroundColor3 = Library.MainColor;
+        BorderSizePixel = 0;
+        Size = UDim2.new(1, 0, 1, 0);
+        ZIndex = 111;
+        Parent = NotifyOuter;
+    });
+
+    Library:ApplyDesign(NotifyInner, 6, Color3.fromRGB(0, 0, 0));
+
+    Library:AddToRegistry(NotifyInner, {
+        BackgroundColor3 = 'MainColor';
+    }, true);
+
+    local InnerFrame = Library:Create('Frame', {
+        BackgroundColor3 = Library.MainColor;
+        BorderSizePixel = 0;
+        Position = UDim2.new(0, 1, 0, 1);
+        Size = UDim2.new(1, -2, 1, -2);
+        ZIndex = 112;
+        Parent = NotifyInner;
+    });
+
+    Library:ApplyDesign(InnerFrame, 5, Library.RiskColor);
+
+    local Gradient = Library:Create('UIGradient', {
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Library:GetDarkerColor(Library.MainColor)),
+            ColorSequenceKeypoint.new(1, Library.MainColor),
+        });
+        Rotation = -90;
+        Parent = InnerFrame;
+    });
+
+    Library:AddToRegistry(Gradient, {
+        Color = function()
+            return ColorSequence.new({
+                ColorSequenceKeypoint.new(0, Library:GetDarkerColor(Library.MainColor)),
+                ColorSequenceKeypoint.new(1, Library.MainColor),
+            });
+        end
+    });
+
+    local NotifyLabel = Library:CreateLabel({
+        Position = UDim2.new(0, 4, 0, 0);
+        Size = UDim2.new(1, -4, 1, 0);
+        Text = Text;
+        TextXAlignment = Enum.TextXAlignment.Center;
+        TextSize = 14;
+        ZIndex = 113;
+        Parent = InnerFrame;
+    });
+
+    local LeftColor = Library:Create('Frame', {
+        BackgroundColor3 = Library.RiskColor;
+        BorderSizePixel = 0;
+        Position = UDim2.new(0, -1, 0, -1);
+        Size = UDim2.new(0, 3, 1, 2);
+        ZIndex = 114;
+        Parent = NotifyOuter;
+    });
+
+    if AnimType == 1 then
+        pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, XSize + 8 + 4, 0, YSize), 'Out', 'Quad', 0.4, true);
+    else
+        NotifyOuter.Size = UDim2.new(0, XSize + 8 + 4, 0, YSize)
+        NotifyInner.Position = UDim2.new(0, 0, 1, 10)
+        
+        NotifyInner.BackgroundTransparency = 1
+        InnerFrame.BackgroundTransparency = 1
+        NotifyLabel.TextTransparency = 1
+        NotifyLabel.TextStrokeTransparency = 1
+        LeftColor.BackgroundTransparency = 1
+
+        TweenService:Create(NotifyInner, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 0 }):Play()
+        TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 0 }):Play()
+        TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 0, TextStrokeTransparency = 0 }):Play()
+        TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 0 }):Play()
+    end
+
+    task.spawn(function()
+        wait(Time or 5);
+
+        if AnimType == 1 then
+            pcall(NotifyOuter.TweenSize, NotifyOuter, UDim2.new(0, 0, 0, YSize), 'Out', 'Quad', 0.4, true);
+            TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
+            TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+        else
+            TweenService:Create(NotifyInner, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+            TweenService:Create(InnerFrame, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+            TweenService:Create(NotifyLabel, TweenInfo.new(0.4), { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
+            TweenService:Create(LeftColor, TweenInfo.new(0.4), { BackgroundTransparency = 1 }):Play()
+        end
+
+        wait(0.4);
+
+        NotifyOuter:Destroy();
+    end);
+end;
+
 function Library:CreateWindow(...)
     local Arguments = { ... }
     local Config = { AnchorPoint = Vector2.zero }
