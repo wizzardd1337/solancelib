@@ -1998,7 +1998,7 @@ do
         });
 
         local ToggleLabel = Library:CreateLabel({
-            Size = UDim2.new(0, 252, 1, 0);
+            Size = UDim2.new(0, 302, 1, 0);
             Position = UDim2.new(1, 6, 0, 0);
             TextSize = 14;
             Text = Info.Text;
@@ -2135,7 +2135,7 @@ do
         Library:ApplyDesign(ToggleInner, 3, Color3.fromRGB(0, 0, 0));
 
         local ToggleLabel = Library:CreateLabel({
-            Size = UDim2.new(0, 252, 1, 0);
+            Size = UDim2.new(0, 302, 1, 0);
             Position = UDim2.new(1, 6, 0, 0);
             TextSize = 14;
             Text = Info.Text;
@@ -2179,7 +2179,7 @@ do
             Min = Info.Min;
             Max = Info.Max;
             Rounding = Info.Rounding;
-            MaxSize = 232;
+            MaxSize = 282;
             Type = 'Slider';
             Callback = Info.Callback or function(Value) end;
         };
@@ -2292,7 +2292,7 @@ do
         end;
 
         function Slider:GetValueFromXOffset(X)
-            return Round(Library:MapValue(X, 0, Slider.MaxSize, Slider.Min, Slider.Max));
+            return Round(Library:MapValue(X, 0, 282, Slider.Min, Slider.Max));
         end;
 
         function Slider:SetValue(Str)
@@ -3523,7 +3523,7 @@ function Library:CreateWindow(...)
     if type(Config.MenuFadeTime) ~= 'number' then Config.MenuFadeTime = 0.2 end
 
     if typeof(Config.Position) ~= 'UDim2' then Config.Position = UDim2.fromOffset(175, 50) end
-    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(620, 600) end
+    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(720, 600) end
 
     if Config.Center then
         Config.AnchorPoint = Vector2.new(0.5, 0.5)
