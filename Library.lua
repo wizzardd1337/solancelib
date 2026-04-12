@@ -35,10 +35,10 @@ local Library = {
     BackgroundColor = Color3.fromRGB(10, 10, 12);
     AccentColor = Color3.fromRGB(255, 255, 255);
     OutlineColor = Color3.fromRGB(35, 35, 38);
-    RiskColor = Color3.fromRGB(255, 50, 50),
+    RiskColor = Color3.fromRGB(255, 50, 50);
 
     Black = Color3.new(0, 0, 0);
-    Font = Enum.Font.Ubuntu,
+    Font = Enum.Font.Ubuntu;
 
     OpenedFrames = {};
     DependencyBoxes = {};
@@ -4261,6 +4261,7 @@ function Library:CreateWindow(...)
         local FadeTime = Config.MenuFadeTime;
         Fading = true;
         Toggled = (not Toggled);
+        Library.IsMenuOpen = Toggled;
         ModalElement.Modal = Toggled;
 
         if Toggled then
