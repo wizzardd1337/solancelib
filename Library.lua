@@ -1178,6 +1178,8 @@ do
         ColorPicker.DisplayFrame = DisplayFrame
 
         Options[Idx] = ColorPicker;
+        return self;
+    end;
 
     function Funcs:AddOption(Idx, Info)
         local ParentObj = self;
@@ -4477,7 +4479,7 @@ function Library:CreateWindow(...)
                 end;
 
                 if Cache[Prop] == 1 then
-                    continue;
+                     
                 end;
 
                 TweenService:Create(Desc, TweenInfo.new(FadeTime, Enum.EasingStyle.Linear), { [Prop] = Toggled and Cache[Prop] or 1 }):Play();
