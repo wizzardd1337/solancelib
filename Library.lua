@@ -607,7 +607,7 @@ do
             Position = UDim2.fromOffset(DisplayFrame.AbsolutePosition.X, DisplayFrame.AbsolutePosition.Y + 18),
             Size = UDim2.fromOffset(230, Info.Transparency and 271 or 253);
             Visible = false;
-            ZIndex = 100;
+            ZIndex = 15;
             Parent = ScreenGui,
         });
 
@@ -817,7 +817,7 @@ do
             ContextMenu.Options = {}
             ContextMenu.Container = Library:Create('Frame', {
                 BorderColor3 = Color3.new(),
-                ZIndex = 99,
+                ZIndex = 14,
 
                 Visible = false,
                 Parent = ScreenGui
@@ -828,7 +828,7 @@ do
                 BorderColor3 = Library.OutlineColor;
                 BorderMode = Enum.BorderMode.Inset;
                 Size = UDim2.fromScale(1, 1);
-                ZIndex = 100;
+                ZIndex = 15;
                 Parent = ContextMenu.Container;
             });
 
@@ -878,7 +878,6 @@ do
             });
 
             function ContextMenu:Show()
-                updateMenuPosition()
                 self.Container.Visible = true
             end
 
@@ -1014,8 +1013,6 @@ do
         end;
 
         function ColorPicker:Show()
-            PickerFrameOuter.Position = UDim2.fromOffset(DisplayFrame.AbsolutePosition.X, DisplayFrame.AbsolutePosition.Y + 18);
-
             for Frame, Val in next, Library.OpenedFrames do
                 if Frame.Name == 'Color' then
                     Frame.Visible = false;
@@ -2461,7 +2458,7 @@ do
         local ListOuter = Library:Create('Frame', {
             BackgroundColor3 = Color3.new(0, 0, 0);
             BorderColor3 = Color3.new(0, 0, 0);
-            ZIndex = 101;
+            ZIndex = 20;
             Visible = false;
             Parent = ScreenGui;
         });
@@ -2679,7 +2676,6 @@ do
         end;
 
         function Dropdown:OpenDropdown()
-            RecalculateListPosition();
             ListOuter.Visible = true;
             Library.OpenedFrames[ListOuter] = true;
             DropdownArrow.Rotation = 180;
