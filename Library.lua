@@ -3656,14 +3656,29 @@ function Library:CreateWindow(...)
         end;
     end);
 
-    local WindowLogo = Library:Create('ImageLabel', {
+    local SecondImage = Library:Create('ImageLabel', {
+        Name = 'SecondImage';
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 15, 0, 15);
-        Size = UDim2.new(1, -30, 0, 50);
+        BorderSizePixel = 0;
+        Position = UDim2.new(0.039, 0, 0.1, 0);
+        Size = UDim2.new(0, 147, 0, 70);
         ZIndex = 2;
-        -- Use rbxthumb with Decal ID to automatically fetch the underlying image
-        Image = 'rbxthumb://type=Asset&id=112578363401787&w=150&h=150';
-        Parent = LeftPanel;
+        Image = 'rbxassetid://102935335694213';
+        ImageColor3 = Library.AccentColor;
+        Parent = Outer;
+    });
+
+    Library:AddToRegistry(SecondImage, { ImageColor3 = 'AccentColor' });
+
+    local MainImage = Library:Create('ImageLabel', {
+        Name = 'MainImage';
+        BackgroundTransparency = 1;
+        BorderSizePixel = 0;
+        Position = UDim2.new(0.03749, 0, 0.09036, 0);
+        Size = UDim2.new(0, 147, 0, 72);
+        ZIndex = 3;
+        Image = 'rbxassetid://102935335694213';
+        Parent = Outer;
     });
 
     local TabArea = Library:Create('Frame', {
@@ -3679,15 +3694,6 @@ function Library:CreateWindow(...)
         FillDirection = Enum.FillDirection.Vertical;
         SortOrder = Enum.SortOrder.LayoutOrder;
         Parent = TabArea;
-    });
-
-    local WindowLogo = Library:Create('ImageLabel', {
-        BackgroundTransparency = 1;
-        Position = UDim2.new(0, 15, 0, 15);
-        Size = UDim2.new(1, -30, 0, 50);
-        ZIndex = 2;
-        Image = ''; -- USER CAN PUT ASSET ID HERE
-        Parent = LeftPanel;
     });
 
     -- Welcome Screen Removed internally to fix rendering overlaps
