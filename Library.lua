@@ -269,11 +269,6 @@ end;
 function Library:ApplyDesign(Instance, Radius, StrokeColor)
     Instance.BorderSizePixel = 0;
     
-    Library:Create('UICorner', {
-        CornerRadius = UDim.new(0, Radius or 8);
-        Parent = Instance;
-    });
-
     Library:Create('UIStroke', {
         Color = StrokeColor or Library.OutlineColor;
         Thickness = 1;
@@ -3525,7 +3520,7 @@ function Library:CreateWindow(...)
     if type(Config.MenuFadeTime) ~= 'number' then Config.MenuFadeTime = 0.2 end
 
     if typeof(Config.Position) ~= 'UDim2' then Config.Position = UDim2.fromOffset(175, 50) end
-    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(620, 600) end
+    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(540, 600) end
 
     if Config.Center then
         Config.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -3538,7 +3533,7 @@ function Library:CreateWindow(...)
 
     local Outer = Library:Create('Frame', {
         AnchorPoint = Config.AnchorPoint,
-        BackgroundColor3 = Color3.new(0, 0, 0);
+        BackgroundColor3 = Library.OutlineColor;
         BorderSizePixel = 0;
         Position = Config.Position,
         Size = Config.Size,
@@ -3547,11 +3542,11 @@ function Library:CreateWindow(...)
         Parent = ScreenGui;
     });
 
-    Library:ApplyDesign(Outer, 8, Library.AccentColor);
+    Library:ApplyDesign(Outer, 0, Library.OutlineColor);
     Library:MakeDraggable(Outer, 25);
 
-    local Inner = Library:Create('Frame', {
-        BackgroundColor3 = Library.MainColor;
+    local Middle = Library:Create('Frame', {
+        BackgroundColor3 = Library.BackgroundColor;
         BorderSizePixel = 0;
         Position = UDim2.new(0, 1, 0, 1);
         Size = UDim2.new(1, -2, 1, -2);
@@ -3559,7 +3554,22 @@ function Library:CreateWindow(...)
         Parent = Outer;
     });
 
-    Library:ApplyDesign(Inner, 7, Library.OutlineColor);
+    Library:ApplyDesign(Middle, 0, Library.OutlineColor);
+
+    Library:AddToRegistry(Middle, {
+        BackgroundColor3 = 'BackgroundColor';
+    });
+
+    local Inner = Library:Create('Frame', {
+        BackgroundColor3 = Library.MainColor;
+        BorderSizePixel = 0;
+        Position = UDim2.new(0, 6, 0, 6);
+        Size = UDim2.new(1, -12, 1, -12);
+        ZIndex = 1;
+        Parent = Middle;
+    });
+
+    Library:ApplyDesign(Inner, 0, Library.OutlineColor);
 
     Library:AddToRegistry(Inner, {
         BackgroundColor3 = 'MainColor';
