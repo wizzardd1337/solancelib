@@ -31,10 +31,10 @@ local Library = {
     HudRegistry = {};
 
     FontColor = Color3.fromRGB(255, 255, 255);
-    MainColor = Color3.fromRGB(15, 15, 18);
-    BackgroundColor = Color3.fromRGB(10, 10, 12);
-    AccentColor = Color3.fromRGB(255, 255, 255);
-    OutlineColor = Color3.fromRGB(35, 35, 38);
+    MainColor = Color3.fromRGB(40, 40, 40);
+    BackgroundColor = Color3.fromRGB(31, 31, 31);
+    AccentColor = Color3.fromRGB(255, 0, 0);
+    OutlineColor = Color3.fromRGB(67, 67, 67);
     RiskColor = Color3.fromRGB(255, 50, 50);
 
     Black = Color3.new(0, 0, 0);
@@ -3520,7 +3520,7 @@ function Library:CreateWindow(...)
     if type(Config.MenuFadeTime) ~= 'number' then Config.MenuFadeTime = 0.2 end
 
     if typeof(Config.Position) ~= 'UDim2' then Config.Position = UDim2.fromOffset(175, 50) end
-    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(540, 600) end
+    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(602, 486) end
 
     if Config.Center then
         Config.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -3532,9 +3532,12 @@ function Library:CreateWindow(...)
     };
 
     local Outer = Library:Create('Frame', {
+        Name = 'Main';
         AnchorPoint = Config.AnchorPoint,
-        BackgroundColor3 = Library.OutlineColor;
-        BorderSizePixel = 0;
+        BackgroundColor3 = Library.MainColor;
+        BorderColor3 = Library.OutlineColor;
+        BorderSizePixel = 3;
+        BorderMode = Enum.BorderMode.Inset;
         Position = Config.Position,
         Size = Config.Size,
         Visible = false;
@@ -3542,49 +3545,73 @@ function Library:CreateWindow(...)
         Parent = ScreenGui;
     });
 
-    Library:ApplyDesign(Outer, 0, Library.OutlineColor);
     Library:MakeDraggable(Outer, 25);
 
-    local Middle = Library:Create('Frame', {
-        BackgroundColor3 = Library.BackgroundColor;
-        BorderSizePixel = 0;
-        Position = UDim2.new(0, 1, 0, 1);
-        Size = UDim2.new(1, -2, 1, -2);
-        ZIndex = 1;
+    Library:AddToRegistry(Outer, { BackgroundColor3 = 'MainColor', BorderColor3 = 'OutlineColor' });
+
+    local GradientLine = Library:Create('Frame', {
+        Name = 'GradientLine';
+        BackgroundColor3 = Library.AccentColor;
+        BorderColor3 = Color3.fromRGB(8, 8, 8);
+        BorderSizePixel = 1;
+        BorderMode = Enum.BorderMode.Inset;
+        Position = UDim2.new(0.0035, 0, 0.01942, 0);
+        Size = UDim2.new(0, 596, 0, 4);
+        ZIndex = 2;
         Parent = Outer;
     });
 
-    Library:ApplyDesign(Middle, 0, Library.OutlineColor);
+    Library:AddToRegistry(GradientLine, { BackgroundColor3 = 'AccentColor' });
 
-    Library:AddToRegistry(Middle, {
-        BackgroundColor3 = 'BackgroundColor';
+    local LeftPanel = Library:Create('Frame', {
+        Name = 'SidePanel';
+        BackgroundColor3 = Color3.fromRGB(16, 16, 16);
+        BorderColor3 = Color3.fromRGB(59, 56, 54);
+        BorderSizePixel = 1;
+        BorderMode = Enum.BorderMode.Inset;
+        Position = UDim2.new(0.01899, 0, 0.03475, 0);
+        Size = UDim2.new(0, 152, 0, 451);
+        ZIndex = 2;
+        Parent = Outer;
     });
 
-    local Inner = Library:Create('Frame', {
-        BackgroundColor3 = Library.MainColor;
+    local RightPanelOuter = Library:Create('Frame', {
+        Name = 'DarkBackgroundFrame';
+        BackgroundColor3 = Library.BackgroundColor;
+        BorderColor3 = Library.OutlineColor;
         BorderSizePixel = 0;
-        Position = UDim2.new(0, 6, 0, 6);
-        Size = UDim2.new(1, -12, 1, -12);
-        ZIndex = 1;
-        Parent = Middle;
+        BorderMode = Enum.BorderMode.Inset;
+        Position = UDim2.new(0.27501, 0, 0.04259, 0);
+        Size = UDim2.new(0, 415, 0, 448);
+        ZIndex = 2;
+        Parent = Outer;
     });
 
-    Library:ApplyDesign(Inner, 0, Library.OutlineColor);
+    Library:AddToRegistry(RightPanelOuter, { BackgroundColor3 = 'BackgroundColor', BorderColor3 = 'OutlineColor' });
 
-    Library:AddToRegistry(Inner, {
-        BackgroundColor3 = 'MainColor';
+    local TabContainer = Library:Create('Frame', {
+        Name = 'MainFunctionsframe';
+        BackgroundColor3 = Library.MainColor;
+        BorderColor3 = Color3.fromRGB(8, 8, 8);
+        BorderSizePixel = 1;
+        BorderMode = Enum.BorderMode.Inset;
+        Position = UDim2.new(0.29482, 0, 0.06634, 0);
+        Size = UDim2.new(0, 392, 0, 424);
+        ZIndex = 3;
+        Parent = Outer;
     });
+
+    Library:AddToRegistry(TabContainer, { BackgroundColor3 = 'MainColor' });
 
     local WindowLabel = Library:CreateLabel({
-        Position = UDim2.new(0, 10, 0, 0);
-        Size = UDim2.new(0, 0, 0, 25);
+        Position = UDim2.new(0, 10, 0, 2);
+        Size = UDim2.new(0, 0, 0, 15);
         Text = Config.Title or '';
         TextXAlignment = Enum.TextXAlignment.Left;
-        ZIndex = 1;
-        Parent = Inner;
+        ZIndex = 4;
+        Parent = Outer;
     });
 
-    -- Subscription time remaining (top-right header); data from Supabase via loader session
     local Players = game:GetService('Players')
     local LocalPlayer = Players.LocalPlayer
 
@@ -3593,13 +3620,13 @@ function Library:CreateWindow(...)
 
     local SubscriptionLabel = Library:CreateLabel({
         AnchorPoint = Vector2.new(1, 0);
-        Position = UDim2.new(1, -10, 0, 0);
-        Size = UDim2.new(0, 300, 0, 25);
+        Position = UDim2.new(1, -10, 0, 2);
+        Size = UDim2.new(0, 300, 0, 15);
         Text = 'days: ...';
         TextXAlignment = Enum.TextXAlignment.Right;
         TextSize = 13;
-        ZIndex = 1;
-        Parent = Inner;
+        ZIndex = 4;
+        Parent = Outer;
     });
 
     Library.SubscriptionLabel = SubscriptionLabel;
@@ -3614,29 +3641,6 @@ function Library:CreateWindow(...)
             end;
         end;
     end);
-
-
-    local LeftPanel = Library:Create('Frame', {
-        BackgroundColor3 = Color3.new(0, 0, 0);
-        BorderSizePixel = 0;
-        Position = UDim2.new(0, 0, 0, 0);
-        Size = UDim2.new(0, 130, 1, 0);
-        ZIndex = 1;
-        Parent = Inner;
-    });
-
-    local DividerLine = Library:Create('Frame', {
-        BackgroundColor3 = Library.OutlineColor;
-        BorderSizePixel = 0;
-        Position = UDim2.new(0, 130, 0, 0);
-        Size = UDim2.new(0, 1, 1, 0);
-        ZIndex = 2;
-        Parent = Inner;
-    });
-
-    Library:AddToRegistry(DividerLine, {
-        BackgroundColor3 = 'OutlineColor';
-    });
 
     local WindowLogo = Library:Create('ImageLabel', {
         BackgroundTransparency = 1;
