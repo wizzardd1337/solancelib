@@ -180,11 +180,11 @@ function Library:RefreshSubscriptionLabel()
         end;
 
         if is_lifetime then
-            label.Text = 'days: lifetime';
+            label.Text = 'udays: lifetime';
             return;
         end;
 
-        label.Text = 'upd days: ' .. tostring(days);
+        label.Text = 'days: ' .. tostring(days);
     end);
 end;
 
