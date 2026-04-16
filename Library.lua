@@ -3668,7 +3668,7 @@ function Library:CreateWindow(...)
     local TabArea = Library:Create('Frame', {
         BackgroundTransparency = 1;
         Position = UDim2.new(0, 0, 0, 45);
-        Size = UDim2.new(1, 0, 1, -45);
+        Size = UDim2.new(1, 0, 1, -55);
         ZIndex = 2;
         Parent = LeftPanel;
     });
