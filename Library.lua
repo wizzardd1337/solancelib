@@ -184,7 +184,7 @@ function Library:RefreshSubscriptionLabel()
             return;
         end;
 
-        label.Text = 'days: ' .. tostring(days);
+        label.Text = 'upd days: ' .. tostring(days);
     end);
 end;
 
@@ -3661,7 +3661,7 @@ function Library:CreateWindow(...)
         Position = UDim2.new(0, 15, 0, 15);
         Size = UDim2.new(1, -30, 0, 50);
         ZIndex = 2;
-        Image = '112578363401787'; -- USER CAN PUT ASSET ID HERE
+        Image = 'rbxassetid://112578363401787'; -- USER CAN PUT ASSET ID HERE
         Parent = LeftPanel;
     });
 
