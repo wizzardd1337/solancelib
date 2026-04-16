@@ -3661,7 +3661,8 @@ function Library:CreateWindow(...)
         Position = UDim2.new(0, 15, 0, 15);
         Size = UDim2.new(1, -30, 0, 50);
         ZIndex = 2;
-        Image = 'rbxassetid://112578363401787'; -- USER CAN PUT ASSET ID HERE
+        -- Use rbxthumb with Decal ID to automatically fetch the underlying image
+        Image = 'rbxthumb://type=Asset&id=112578363401787&w=150&h=150';
         Parent = LeftPanel;
     });
 
