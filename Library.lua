@@ -3520,7 +3520,7 @@ function Library:CreateWindow(...)
     if type(Config.MenuFadeTime) ~= 'number' then Config.MenuFadeTime = 0.2 end
 
     if typeof(Config.Position) ~= 'UDim2' then Config.Position = UDim2.fromOffset(175, 50) end
-    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(602, 486) end
+    if typeof(Config.Size) ~= 'UDim2' then Config.Size = UDim2.fromOffset(660, 522) end
 
     if Config.Center then
         Config.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -3536,7 +3536,7 @@ function Library:CreateWindow(...)
         AnchorPoint = Config.AnchorPoint,
         BackgroundColor3 = Library.MainColor;
         BorderColor3 = Library.OutlineColor;
-        BorderSizePixel = 3;
+        BorderSizePixel = 2;
         BorderMode = Enum.BorderMode.Inset;
         Position = Config.Position,
         Size = Config.Size,
@@ -3549,16 +3549,30 @@ function Library:CreateWindow(...)
 
     Library:AddToRegistry(Outer, { BackgroundColor3 = 'MainColor', BorderColor3 = 'OutlineColor' });
 
+    local Element = Library:Create('Frame', {
+        Name = 'Element';
+        BackgroundColor3 = Library.MainColor;
+        BorderColor3 = Library.OutlineColor;
+        BorderSizePixel = 2;
+        BorderMode = Enum.BorderMode.Inset;
+        Position = UDim2.new(0.009, 0, 0.017, 0);
+        Size = UDim2.new(0, 643, 0, 504);
+        ZIndex = 1;
+        Parent = Outer;
+    });
+
+    Library:AddToRegistry(Element, { BackgroundColor3 = 'MainColor', BorderColor3 = 'OutlineColor' });
+
     local GradientLine = Library:Create('Frame', {
         Name = 'GradientLine';
         BackgroundColor3 = Library.AccentColor;
         BorderColor3 = Color3.fromRGB(8, 8, 8);
         BorderSizePixel = 1;
         BorderMode = Enum.BorderMode.Inset;
-        Position = UDim2.new(0.0035, 0, 0.01942, 0);
-        Size = UDim2.new(0, 596, 0, 4);
+        Position = UDim2.new(-0.00126, 0, 0.01268, 0);
+        Size = UDim2.new(0, 641, 0, 4);
         ZIndex = 1;
-        Parent = Outer;
+        Parent = Element;
     });
 
     Library:AddToRegistry(GradientLine, { BackgroundColor3 = 'AccentColor' });
@@ -3569,10 +3583,10 @@ function Library:CreateWindow(...)
         BorderColor3 = Color3.fromRGB(59, 56, 54);
         BorderSizePixel = 1;
         BorderMode = Enum.BorderMode.Inset;
-        Position = UDim2.new(0.01899, 0, 0.03475, 0);
-        Size = UDim2.new(0, 152, 0, 451);
+        Position = UDim2.new(0.02173, 0, 0.04927, 0);
+        Size = UDim2.new(0, 162, 0, 467);
         ZIndex = 1;
-        Parent = Outer;
+        Parent = Element;
     });
 
     local RightPanelOuter = Library:Create('Frame', {
@@ -3581,10 +3595,10 @@ function Library:CreateWindow(...)
         BorderColor3 = Library.OutlineColor;
         BorderSizePixel = 0;
         BorderMode = Enum.BorderMode.Inset;
-        Position = UDim2.new(0.27501, 0, 0.04259, 0);
-        Size = UDim2.new(0, 415, 0, 448);
+        Position = UDim2.new(0.28397, 0, 0.05324, 0);
+        Size = UDim2.new(0, 443, 0, 464);
         ZIndex = 1;
-        Parent = Outer;
+        Parent = Element;
     });
 
     Library:AddToRegistry(RightPanelOuter, { BackgroundColor3 = 'BackgroundColor', BorderColor3 = 'OutlineColor' });
@@ -3595,10 +3609,10 @@ function Library:CreateWindow(...)
         BorderColor3 = Color3.fromRGB(8, 8, 8);
         BorderSizePixel = 1;
         BorderMode = Enum.BorderMode.Inset;
-        Position = UDim2.new(0.29482, 0, 0.06634, 0);
-        Size = UDim2.new(0, 392, 0, 424);
+        Position = UDim2.new(0.30208, 0, 0.08237, 0);
+        Size = UDim2.new(0, 418, 0, 439);
         ZIndex = 2;
-        Parent = Outer;
+        Parent = Element;
     });
 
     Library:AddToRegistry(TabContainer, { BackgroundColor3 = 'MainColor' });
