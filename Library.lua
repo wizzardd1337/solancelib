@@ -3557,7 +3557,7 @@ function Library:CreateWindow(...)
         BorderMode = Enum.BorderMode.Inset;
         Position = UDim2.new(0.0035, 0, 0.01942, 0);
         Size = UDim2.new(0, 596, 0, 4);
-        ZIndex = 2;
+        ZIndex = 1;
         Parent = Outer;
     });
 
@@ -3571,7 +3571,7 @@ function Library:CreateWindow(...)
         BorderMode = Enum.BorderMode.Inset;
         Position = UDim2.new(0.01899, 0, 0.03475, 0);
         Size = UDim2.new(0, 152, 0, 451);
-        ZIndex = 2;
+        ZIndex = 1;
         Parent = Outer;
     });
 
@@ -3583,7 +3583,7 @@ function Library:CreateWindow(...)
         BorderMode = Enum.BorderMode.Inset;
         Position = UDim2.new(0.27501, 0, 0.04259, 0);
         Size = UDim2.new(0, 415, 0, 448);
-        ZIndex = 2;
+        ZIndex = 1;
         Parent = Outer;
     });
 
@@ -3597,7 +3597,7 @@ function Library:CreateWindow(...)
         BorderMode = Enum.BorderMode.Inset;
         Position = UDim2.new(0.29482, 0, 0.06634, 0);
         Size = UDim2.new(0, 392, 0, 424);
-        ZIndex = 3;
+        ZIndex = 2;
         Parent = Outer;
     });
 
@@ -3653,8 +3653,8 @@ function Library:CreateWindow(...)
 
     local TabArea = Library:Create('Frame', {
         BackgroundTransparency = 1;
-        Position = UDim2.new(0, 0, 0, 80);
-        Size = UDim2.new(1, 0, 1, -80);
+        Position = UDim2.new(0, 0, 0, 30);
+        Size = UDim2.new(1, 0, 1, -30);
         ZIndex = 2;
         Parent = LeftPanel;
     });
@@ -3666,165 +3666,28 @@ function Library:CreateWindow(...)
         Parent = TabArea;
     });
 
-    local RightPanelOuter = Library:Create('Frame', {
-        BackgroundColor3 = Library.BackgroundColor;
-        BorderSizePixel = 0;
-        Position = UDim2.new(0, 131, 0, 25);
-        Size = UDim2.new(1, -131, 1, -25);
-        ZIndex = 1;
-        Parent = Inner;
-    });
-
-    Library:AddToRegistry(RightPanelOuter, {
-        BackgroundColor3 = 'BackgroundColor';
-    });
-
-    local TabContainer = Library:Create('Frame', {
-        BackgroundColor3 = Library.MainColor;
-        BorderSizePixel = 0;
-        Position = UDim2.new(0, 10, 0, 10);
-        Size = UDim2.new(1, -20, 1, -20);
-        ZIndex = 2;
-        Parent = RightPanelOuter;
-    });
-    
-    Library:ApplyDesign(TabContainer, 6, Library.OutlineColor);
-
-    Library:AddToRegistry(TabContainer, {
-        BackgroundColor3 = 'MainColor';
-    });
-
-    -- Welcome Screen (visible when no tab is selected)
-    local WelcomeFrame = Library:Create('Frame', {
+    local WindowLogo = Library:Create('ImageLabel', {
         BackgroundTransparency = 1;
-        Size = UDim2.new(1, 0, 1, 0);
-        ZIndex = 3;
-        Parent = TabContainer;
+        Position = UDim2.new(0, 15, 0, 15);
+        Size = UDim2.new(1, -30, 0, 50);
+        ZIndex = 2;
+        Image = ''; -- USER CAN PUT ASSET ID HERE
+        Parent = LeftPanel;
     });
 
-    local WelcomeTitle = Library:CreateLabel({
-        Position = UDim2.new(0, 20, 0, 20);
-        Size = UDim2.new(1, -40, 0, 30);
-        Text = 'welcome, ' .. string.lower(LocalPlayer.Name);
-        TextSize = 20;
-        TextXAlignment = Enum.TextXAlignment.Left;
-        ZIndex = 4;
-        Parent = WelcomeFrame;
-    });
-
-    Library:RemoveFromRegistry(WelcomeTitle)
-    WelcomeTitle.TextColor3 = Library.AccentColor
-    Library:AddToRegistry(WelcomeTitle, { TextColor3 = 'AccentColor' })
-
-    local ChangelogHeader = Library:CreateLabel({
-        Position = UDim2.new(0, 20, 0, 60);
-        Size = UDim2.new(1, -40, 0, 18);
-        Text = 'changes:';
-        TextSize = 15;
-        TextXAlignment = Enum.TextXAlignment.Left;
-        ZIndex = 4;
-        Parent = WelcomeFrame;
-    });
-
-    local ChangelogText = Library:CreateLabel({
-        Position = UDim2.new(0, 20, 0, 82);
-        Size = UDim2.new(1, -40, 0.4, 0);
-        Text = '';
-        TextSize = 13;
-        TextXAlignment = Enum.TextXAlignment.Left;
-        TextYAlignment = Enum.TextYAlignment.Top;
-        TextWrapped = true;
-        ZIndex = 4;
-        Parent = WelcomeFrame;
-    });
-
-    Library:RemoveFromRegistry(ChangelogText)
-    ChangelogText.TextColor3 = Color3.fromRGB(180, 180, 180)
-
-    local InternalHeader = Library:CreateLabel({
-        Position = UDim2.new(0, 20, 0.5, 10);
-        Size = UDim2.new(1, -40, 0, 18);
-        Text = 'internal changes:';
-        TextSize = 15;
-        TextXAlignment = Enum.TextXAlignment.Left;
-        ZIndex = 4;
-        Parent = WelcomeFrame;
-    });
-
-    Library:RemoveFromRegistry(InternalHeader)
-    InternalHeader.TextColor3 = Color3.fromRGB(120, 120, 120)
-
-    local InternalText = Library:CreateLabel({
-        Position = UDim2.new(0, 20, 0.5, 32);
-        Size = UDim2.new(1, -40, 0.4, -20);
-        Text = '';
-        TextSize = 13;
-        TextXAlignment = Enum.TextXAlignment.Left;
-        TextYAlignment = Enum.TextYAlignment.Top;
-        TextWrapped = true;
-        ZIndex = 4;
-        Parent = WelcomeFrame;
-    });
-
-    Library:RemoveFromRegistry(InternalText)
-    InternalText.TextColor3 = Color3.fromRGB(100, 100, 100)
-
-    local WelcomeHint = Library:CreateLabel({
-        AnchorPoint = Vector2.new(0.5, 1);
-        Position = UDim2.new(0.5, 0, 1, -15);
-        Size = UDim2.new(1, -40, 0, 18);
-        Text = 'select one of the tabs to start using the cheat.';
-        TextSize = 13;
-        ZIndex = 4;
-        Parent = WelcomeFrame;
-    });
-
-    Library:RemoveFromRegistry(WelcomeHint)
-    WelcomeHint.TextColor3 = Color3.fromRGB(100, 100, 100)
-
-    local PoweredByLabel = Library:CreateLabel({
-        AnchorPoint = Vector2.new(1, 1);
-        Position = UDim2.new(1, -15, 1, -15);
-        Size = UDim2.new(0, 150, 0, 14);
-        Text = 'powered by solancelib';
-        TextSize = 12;
-        TextXAlignment = Enum.TextXAlignment.Right;
-        ZIndex = 4;
-        Parent = WelcomeFrame;
-    });
-
-    Library:RemoveFromRegistry(PoweredByLabel)
-    PoweredByLabel.TextColor3 = Color3.fromRGB(60, 60, 60)
-
-    Library.WelcomeFrame = WelcomeFrame
-    Library.WelcomeTitle = WelcomeTitle
-    Library.ChangelogText = ChangelogText
-    Library.InternalText = InternalText
+    -- Welcome Screen Removed internally to fix rendering overlaps
 
     function Library:SetChangelog(changes, internal)
-        if Library.ChangelogText then
-            Library.ChangelogText.Text = changes or ''
-        end
-        if Library.InternalText then
-            Library.InternalText.Text = internal or ''
-        end
+        -- No actions needed for removed WelcomeScreen
     end
 
     function Library:UpdateWelcomeName()
-        if Library.WelcomeTitle then
-            if Toggles and Toggles.UI_ProtectNameInUI and Toggles.UI_ProtectNameInUI.Value 
-                and Toggles.Misc_NameProtectEnabled and Toggles.Misc_NameProtectEnabled.Value then
-                Library.WelcomeTitle.Text = 'welcome, protected'
-            else
-                Library.WelcomeTitle.Text = 'welcome, ' .. (Library.PlayerRealName or string.lower(LocalPlayer.Name))
-            end
-        end
+        -- No actions needed for removed WelcomeScreen
     end
 
     function Window:SetWindowTitle(Title)
         WindowLabel.Text = Title;
     end;
-
 
     function Window:AddTab(Name)
         local Tab = {
@@ -3835,9 +3698,9 @@ function Library:CreateWindow(...)
         local TabButton = Library:Create('TextButton', {
             BackgroundTransparency = 1;
             BorderSizePixel = 0;
-            Size = UDim2.new(1, 0, 0, 24);
+            Size = UDim2.new(1, 0, 0, 30); -- Raised hit area
             Text = '';
-            ZIndex = 1;
+            ZIndex = 2;
             Parent = TabArea;
         });
 
@@ -3845,7 +3708,7 @@ function Library:CreateWindow(...)
             Position = UDim2.new(0, 15, 0, 0);
             Size = UDim2.new(1, -15, 1, 0);
             Text = Name;
-            TextSize = 14;
+            TextSize = 16;
             TextXAlignment = Enum.TextXAlignment.Left;
             ZIndex = 2;
             Parent = TabButton;
