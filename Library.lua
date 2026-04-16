@@ -3636,7 +3636,7 @@ function Library:CreateWindow(...)
         AnchorPoint = Vector2.new(1, 0);
         Position = UDim2.new(1, -10, 0, 2);
         Size = UDim2.new(0, 300, 0, 15);
-        Text = 'days: ...';
+        Text = 'upd days: ...';
         TextXAlignment = Enum.TextXAlignment.Right;
         TextSize = 13;
         ZIndex = 4;
@@ -3661,7 +3661,7 @@ function Library:CreateWindow(...)
         Position = UDim2.new(0, 15, 0, 15);
         Size = UDim2.new(1, -30, 0, 50);
         ZIndex = 2;
-        Image = ''; -- USER CAN PUT ASSET ID HERE
+        Image = '112578363401787'; -- USER CAN PUT ASSET ID HERE
         Parent = LeftPanel;
     });
 
